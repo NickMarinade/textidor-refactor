@@ -7,6 +7,7 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const config = require('./config');
+const api = require('./api/routes');
 
 // - setup -
 const FILES_DIR = path.join(__dirname, config.FILES_DIR);
@@ -33,8 +34,9 @@ app.use('/', express.static(path.join(__dirname, 'client')));
 
 // ------ refactor everything from here .....
 
+app.use('/api', api);
 
-app.get('/api/files', (req, res, next) => {
+/*app.get('/api/files', (req, res, next) => {
   fs.readdir(FILES_DIR, (err, list) => {
     if (err && err.code === 'ENOENT') {
       res.status(404).end();
@@ -111,7 +113,7 @@ app.delete('/api/files/:name', (req, res, next) => {
     // handlers.getFiles(req, res, next);
   });
 });
-
+*/
 // ..... to here ------
 
 // - error handling middleware

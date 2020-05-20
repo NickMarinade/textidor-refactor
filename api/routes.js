@@ -1,15 +1,17 @@
 // require the handlers
-_;
+const handlers = require("./handlers.js");
 const express = require('express');
 
 // build the router
-_;
+const router = express.Router();;
 
 router.get('/', (req, res) => {
   res.send('files API!');
 });
 
 // add routes to router
+router.get('/files', handlers.getFiles);
+router.get('/files/:name', handlers.getFile);
 
 // export the router
-_;
+module.exports = router;;
