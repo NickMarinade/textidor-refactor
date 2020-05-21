@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
 // add routes to router
 router.get('/files', handlers.getFiles);
 router.get('/files/:name', handlers.getFile);
-
+router.post("/files/:name", handlers.postFile);
+router.delete("/files/:name", handlers.deleteFile);
 // export the router
 module.exports = router;;

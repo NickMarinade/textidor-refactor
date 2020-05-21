@@ -26,7 +26,7 @@ const handlers = {
             }
         }
     },
-
+//  called by action: fetchAndLoadFile
     getFile: async (req, res, next) => {
         const fileName = req.params.name;
         
@@ -37,6 +37,39 @@ const handlers = {
                 text: fileText,
             };
             res.json(responseData);
+        } catch (err) {
+            if (err && err.code === 'ENOENT') {
+                res.status(404).end();
+            }
+            if (err) {
+                next(err);
+            }
+        }
+    },
+//  called by action: saveFile
+    postFile: async (req, res, next) => {
+        const fileName = req.params.name;
+        const fileText = req.body.text;
+
+        try {
+            await writeFilePromise(`${FILES_DIR}/${fileName}`, fileText);
+            res.redirect(303, '/api/files');
+        } catch (err) {
+            if (err && err.code === 'ENOENT') {
+                res.status(404).end();
+            }
+            if (err) {
+                next(err);
+            }
+        }
+    },
+//  called by action: deleteFile
+    deleteFile: async (req, res, next) => {
+        const fileName = req.params.name;
+
+        try {
+            await unlinkPromise(`${FILES_DIR}/${fileName}`)
+            res.redirect(303, '/api/files');
         } catch (err) {
             if (err && err.code === 'ENOENT') {
                 res.status(404).end();
